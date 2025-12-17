@@ -1,16 +1,25 @@
 #!/bin/bash
 
 USERNAME=$1
+ROLE=$2
 
-if [ -z "$USERNAME" ]; then
-  echo "Usage: ./manage_permissions.sh <username>"
+if [ -z "$USERNAME" ] || [ -z "$ROLE" ]; then
+  echo "Usage: ./manage_permissions.sh <username> <role>"
   exit 1
 fi
 
-chmod 700 /home/$USERNAME
+case $ROLE in
+  EMPLOYEE|ADMIN)
+    chmod 700 /home/$USERNAME
+    ;;
+  INTERN)
+    chmod 600 /home/$USERNAME
+    ;;
+  *)
+    echo "Invalid role"
+    exit 1
+    ;;
+esac
 
-setfacl -m u:$USERNAME:rwx /home/$USERNAME
-setfacl -m o::--- /home/$USERNAME
-
-echo "$(date): Permissions restricted for $USERNAME" >> ../logs/user_mgmt.log
+echo "$(date): Applied $ROLE permissions to $USERNAME" >> ../logs/user_mgmt.log
 
