@@ -9,24 +9,35 @@ USERNAME=$1
 ROLE=$2
 
 if [ -z "$USERNAME" ] || [ -z "$ROLE" ]; then
-  echo "Usage: ./create_user.sh <username> <role>"
+  echo "Usage: ./create_user.sh <username> <EMPLOYEE|ADMIN|INTERN>"
   exit 1
 fi
 
 source ../config/roles.conf
 
-if [ "$ROLE" == "EMPLOYEE" ]; then
-  groupadd -f $EMPLOYEE_GROUP
+case $ROLE in
+  EMPLOYEE)
+    GROUP=$EMPLOYEE_GROUP
+    PERMS=$EMPLOYEE_HOME_PERMS
+    ;;
+  ADMIN)
+    GROUP=$ADMIN_GROUP
+    PERMS=$ADMIN_HOME_PERMS
+    ;;
+  INTERN)
+    GROUP=$INTERN_GROUP
+    PERMS=$INTERN_HOME_PERMS
+    ;;
+  *)
+    echo "Invalid role"
+    exit 1
+    ;;
+esac
 
-  useradd -m -s /bin/bash -g $EMPLOYEE_GROUP $USERNAME
+groupadd -f $GROUP
+useradd -m -s /bin/bash -g $GROUP $USERNAME
+chmod $PERMS /home/$USERNAME
+passwd -d $USERNAME
 
-  chmod $EMPLOYEE_HOME_PERMS /home/$USERNAME
-
-  passwd -d $USERNAME
-
-  echo "$(date): Created employee user $USERNAME" >> ../logs/user_mgmt.log
-else
-  echo "Unknown role"
-  exit 1
-fi
+echo "$(date): Created $ROLE user $USERNAME" >> ../logs/user_mgmt.log
 
