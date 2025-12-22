@@ -77,3 +77,77 @@ Permissions are enforced at the filesystem level using Linux ownership and mode 
 ## Role Configuration
 
 Role permissions are defined in `config/roles.conf`:
+```
+EMPLOYEE_HOME_PERMS=700
+EMPLOYEE_GROUP=employees
+
+ADMIN_HOME_PERMS=700
+ADMIN_GROUP=admins
+
+INTERN_HOME_PERMS=600
+INTERN_GROUP=interns
+```
+Separating role configuration from executable scripts allows centralized policy
+management, easier auditing, and safe extensibility.
+
+---
+
+## Scripts Description
+
+### create_user.sh
+
+Creates a new user based on a specified role.
+
+Features:
+- Role validation
+- Role-based group assignment
+- Restricted home directory permissions
+- Centralized logging
+
+Usage:
+```text
+sudo ./create_user.sh <username> <EMPLOYEE|ADMIN|INTERN>
+```
+---
+
+### manage_permissions.sh
+
+Applies or reapplies filesystem permissions based on user role.
+
+Purpose:
+- Enforces least privilege
+- Disables execution for intern accounts
+
+Usage:
+```text
+sudo ./manage_permissions.sh <username> <role>
+```
+---
+
+### delete_user.sh
+
+Securely deletes a user account.
+
+Features:
+- Removes the user and home directory
+- Logs deletion for auditing
+
+Usage:
+```text
+sudo ./delete_user.sh <username>
+```
+---
+
+### list_users.sh
+
+Lists users grouped by role.
+
+Purpose:
+- Auditing
+- Role verification
+- Administrative review
+
+Usage:
+```text
+./list_users.sh
+```
