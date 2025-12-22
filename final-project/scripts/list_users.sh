@@ -1,13 +1,24 @@
 #!/bin/bash
 
+print_group_users() {
+  GROUP_NAME=$1
+  GROUP_GID=$(getent group "$GROUP_NAME" | cut -d: -f3)
+
+  if [ -z "$GROUP_GID" ]; then
+    return
+  fi
+
+  awk -F: -v gid="$GROUP_GID" '$4 == gid { print $1 }' /etc/passwd
+}
+
 echo "Admins:"
-getent group admins | cut -d: -f4 | tr ',' '\n'
+print_group_users admins
 
 echo
 echo "Employees:"
-getent group employees | cut -d: -f4 | tr ',' '\n'
+print_group_users employees
 
 echo
 echo "Interns:"
-getent group interns | cut -d: -f4 | tr ',' '\n'
+print_group_users interns
  

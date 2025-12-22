@@ -21,5 +21,5 @@ case $ROLE in
     ;;
 esac
 
-echo "$(date): Applied $ROLE permissions to $USERNAME" >> ../logs/user_mgmt.log
+echo "$(date): Applied $ROLE permissions to $USERNAME" >> $BASE_DIR/logs/user_mgmt.log
 

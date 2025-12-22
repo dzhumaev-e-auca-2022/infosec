@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="$(dirname "$SCRIPT_DIR")"
+
 if [ "$EUID" -ne 0 ]; then
   echo "Please run as root"
   exit 1
@@ -13,7 +16,7 @@ if [ -z "$USERNAME" ] || [ -z "$ROLE" ]; then
   exit 1
 fi
 
-source ../config/roles.conf
+source "$BASE_DIR/config/roles.conf"
 
 case $ROLE in
   EMPLOYEE)
@@ -34,10 +37,10 @@ case $ROLE in
     ;;
 esac
 
-groupadd -f $GROUP
-useradd -m -s /bin/bash -g $GROUP $USERNAME
-chmod $PERMS /home/$USERNAME
-passwd -d $USERNAME
+groupadd -f "$GROUP"
+useradd -m -s /bin/bash -g "$GROUP" "$USERNAME"
+chmod "$PERMS" "/home/$USERNAME"
+passwd -d "$USERNAME"
 
-echo "$(date): Created $ROLE user $USERNAME" >> ../logs/user_mgmt.log
+echo "$(date): Created $ROLE user $USERNAME" >> "$BASE_DIR/logs/user_mgmt.log"
 

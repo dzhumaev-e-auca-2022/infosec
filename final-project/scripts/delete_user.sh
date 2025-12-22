@@ -9,5 +9,5 @@ fi
 
 userdel -r $USERNAME
 
-echo "$(date): Deleted user $USERNAME" >> ../logs/user_mgmt.log
+echo "$(date): Deleted user $USERNAME" >> $BASE_DIR/logs/user_mgmt.log
 
