@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+BASE_DIR="$(dirname "$SCRIPT_DIR")"
+
 USERNAME=$1
 
 if [ -z "$USERNAME" ]; then
@@ -7,7 +10,9 @@ if [ -z "$USERNAME" ]; then
   exit 1
 fi
 
-userdel -r $USERNAME
+# Delete user and home directory
+userdel -r "$USERNAME" 2>/dev/null
 
-echo "$(date): Deleted user $USERNAME" >> $BASE_DIR/logs/user_mgmt.log
+# Log action
+echo "$(date): Deleted user $USERNAME" >> "$BASE_DIR/logs/user_mgmt.log"
 
