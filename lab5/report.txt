@@ -1,0 +1,177 @@
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo cat /etc/passwd
+root:x:0:0:root:/root:/bin/bash
+daemon:x:1:1:daemon:/usr/sbin:/usr/sbin/nologin
+bin:x:2:2:bin:/bin:/usr/sbin/nologin
+sys:x:3:3:sys:/dev:/usr/sbin/nologin
+sync:x:4:65534:sync:/bin:/bin/sync
+games:x:5:60:games:/usr/games:/usr/sbin/nologin
+man:x:6:12:man:/var/cache/man:/usr/sbin/nologin
+lp:x:7:7:lp:/var/spool/lpd:/usr/sbin/nologin
+mail:x:8:8:mail:/var/mail:/usr/sbin/nologin
+news:x:9:9:news:/var/spool/news:/usr/sbin/nologin
+uucp:x:10:10:uucp:/var/spool/uucp:/usr/sbin/nologin
+proxy:x:13:13:proxy:/bin:/usr/sbin/nologin
+www-data:x:33:33:www-data:/var/www:/usr/sbin/nologin
+backup:x:34:34:backup:/var/backups:/usr/sbin/nologin
+list:x:38:38:Mailing List Manager:/var/list:/usr/sbin/nologin
+irc:x:39:39:ircd:/run/ircd:/usr/sbin/nologin
+_apt:x:42:65534::/nonexistent:/usr/sbin/nologin
+nobody:x:65534:65534:nobody:/nonexistent:/usr/sbin/nologin
+systemd-network:x:998:998:systemd Network Management:/:/usr/sbin/nologin
+systemd-timesync:x:996:996:systemd Time Synchronization:/:/usr/sbin/nologin
+dhcpcd:x:100:65534:DHCP Client Daemon,,,:/usr/lib/dhcpcd:/bin/false
+messagebus:x:101:101::/nonexistent:/usr/sbin/nologin
+syslog:x:102:102::/nonexistent:/usr/sbin/nologin
+systemd-resolve:x:991:991:systemd Resolver:/:/usr/sbin/nologin
+uuidd:x:103:103::/run/uuidd:/usr/sbin/nologin
+landscape:x:104:105::/var/lib/landscape:/usr/sbin/nologin
+polkitd:x:990:990:User for polkitd:/:/usr/sbin/nologin
+esen:x:1000:1000:,,,:/home/esen:/bin/bash
+jane:x:1001:1001::/home/jane:/bin/bash
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo cat /etc/group
+root:x:0:
+daemon:x:1:
+bin:x:2:
+sys:x:3:
+adm:x:4:syslog,esen
+tty:x:5:
+disk:x:6:
+lp:x:7:
+mail:x:8:
+news:x:9:
+uucp:x:10:
+man:x:12:
+proxy:x:13:
+kmem:x:15:
+dialout:x:20:
+fax:x:21:
+voice:x:22:
+cdrom:x:24:esen
+floppy:x:25:
+tape:x:26:
+sudo:x:27:esen
+audio:x:29:
+dip:x:30:esen
+www-data:x:33:
+backup:x:34:
+operator:x:37:
+list:x:38:
+irc:x:39:
+src:x:40:
+shadow:x:42:
+utmp:x:43:
+video:x:44:
+sasl:x:45:
+plugdev:x:46:esen
+staff:x:50:
+games:x:60:
+users:x:100:esen
+nogroup:x:65534:
+systemd-journal:x:999:
+systemd-network:x:998:
+crontab:x:997:
+systemd-timesync:x:996:
+input:x:995:
+sgx:x:994:
+kvm:x:993:
+render:x:992:
+messagebus:x:101:
+syslog:x:102:
+systemd-resolve:x:991:
+uuidd:x:103:
+_ssh:x:104:
+landscape:x:105:
+polkitd:x:990:
+admin:x:106:
+netdev:x:107:
+esen:x:1000:
+employees:x:1001:
+interns:x:1002:
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ groups esen
+esen : esen adm cdrom sudo dip plugdev users
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo groupadd labgroup
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ getent group labgroup
+labgroup:x:1003:
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo adduser labuser
+info: Adding user `labuser' ...
+info: Selecting UID/GID from range 1000 to 59999 ...
+info: Adding new group `labuser' (1004) ...
+info: Adding new user `labuser' (1004) with group `labuser (1004)' ...
+info: Creating home directory `/home/labuser' ...
+info: Copying files from `/etc/skel' ...
+New password:
+Retype new password:
+passwd: password updated successfully
+Changing the user information for labuser
+Enter the new value, or press ENTER for the default
+        Full Name []: jane doe
+        Room Number []: 12345
+        Work Phone []: 12345
+        Home Phone []: 12345
+        Other []:
+Is the information correct? [Y/n] y
+info: Adding new user `labuser' to supplemental / extra groups `users' ...
+info: Adding user `labuser' to group `users' ...
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo cat /etc/passwd | grep labuser
+labuser:x:1004:1004:jane doe,12345,12345,12345:/home/labuser:/bin/bash
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ ls /home
+esen  infosec  jane  labuser  temp
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo usermod -aG labgroup labuser
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ groups labuser
+labuser : labuser users labgroup
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ su - labuser
+Password:
+Welcome to Ubuntu 24.04.3 LTS (GNU/Linux 6.6.87.2-microsoft-standard-WSL2 x86_64)
+
+ * Documentation:  https://help.ubuntu.com
+ * Management:     https://landscape.canonical.com
+ * Support:        https://ubuntu.com/pro
+
+ System information as of Mon Dec 22 23:50:21 +05 2025
+
+  System load:  0.0                 Processes:             32
+  Usage of /:   0.2% of 1006.85GB   Users logged in:       1
+  Memory usage: 5%                  IPv4 address for eth0: 172.22.188.115
+  Swap usage:   0%
+
+ * Strictly confined Kubernetes makes edge and IoT secure. Learn how MicroK8s
+   just raised the bar for easy, resilient and secure K8s cluster deployment.
+
+   https://ubuntu.com/engage/secure-kubernetes-at-the-edge
+
+This message is shown once a day. To disable it please create the
+/home/labuser/.hushlogin file.
+labuser@DESKTOP-DD03TV4:~$ whoami
+labuser
+labuser@DESKTOP-DD03TV4:~$ groups
+labuser users labgroup
+labuser@DESKTOP-DD03TV4:~$ exit
+logout
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo pkill -KILL -u labuser
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo deluser --remove-home --force labuser
+Unknown option: force
+deluser [--system] [--remove-home] [--remove-all-files] [--backup]
+        [--backup-to dir] [--backup-suffix str] [--conf file]
+        [--quiet] [--verbose] [--debug] user
+
+  remove a normal user from the system
+
+deluser --group [--system] [--only-if-empty] [--conf file] [--quiet]
+        [--verbose] [--debug] group
+delgroup [--system] [--only-if-empty] [--conf file] [--quiet]
+         [--verbose] [--debug] group
+  remove a group from the system
+
+deluser [--conf file] [--quiet] [--verbose] [--debug] user group
+  remove the user from a group
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo deluser --remove-home labuser
+info: Looking for files to backup/remove ...
+info: Removing files ...
+info: Removing crontab ...
+info: Removing user `labuser' ...
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo cat /etc/passwd | grep labuser
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ ls /home
+esen  infosec  jane  temp
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ sudo groupdel labgroup
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$ getent group labgroup
+esen@DESKTOP-DD03TV4:/home/infosec/lab5$
