@@ -1,0 +1,4 @@
+esen@DESKTOP-DD03TV4:/home/infosec/lab8$ sudo touch file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab8$ ls
+file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab8$ sudo vim file.txt
