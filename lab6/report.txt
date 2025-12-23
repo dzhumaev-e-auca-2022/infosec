@@ -1,0 +1,32 @@
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo touch file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ ls -la
+total 8
+drwxr-xr-x  2 root root 4096 Dec 23 13:58 .
+drwxr-xr-x 10 root root 4096 Dec 23 13:58 ..
+-rw-r--r--  1 root root    0 Dec 23 13:58 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chmod 754 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ ls -la
+total 8
+drwxr-xr-x  2 root root 4096 Dec 23 13:58 .
+drwxr-xr-x 10 root root 4096 Dec 23 13:58 ..
+-rwxr-xr--  1 root root    0 Dec 23 13:58 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ ls -l file.txt
+-rwxr-xr-- 1 root root 0 Dec 23 13:58 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chown jane file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ ls -l file.txt
+-rwxr-xr-- 1 jane root 0 Dec 23 13:58 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chgrp devs file.txt
+chgrp: invalid group: ‘devs’
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo groupadd students
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chgrp students file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ ls -l file.txt
+-rwxr-xr-- 1 jane students 0 Dec 23 13:58 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chown jane:students file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ chmod 640 file.txt
+chmod: changing permissions of 'file.txt': Operation not permitted
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chmod 640 file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo groupadd developers
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ sudo chgrp developers file.txt
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$ echo "test" >> file.txt
+-bash: file.txt: Permission denied
+esen@DESKTOP-DD03TV4:/home/infosec/lab6$
