@@ -1,0 +1,59 @@
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo vim /etc/nginx/sites-available/my_site
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo cat /etc/nginx/sites-available/my_site
+server {
+    listen 8000;
+    server_name localhost;
+
+    root /var/www/html;
+    index my_site.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo cat /var/www/html/my_site.html
+<div>My site on 8000</div>
+
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo ln -s /etc/nginx/sites-available/my_site /etc/nginx/sites-enabled/
+ln: failed to create symbolic link '/etc/nginx/sites-enabled/my_site': File exists
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo systemctl reload nginx
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo tail -f /var/log/nginx/error.log
+2025/12/23 14:29:11 [notice] 5353#5353: using inherited sockets from "5;6;"
+2025/12/23 14:40:21 [error] 5594#5594: *4 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "localhost:8000"
+2025/12/23 14:42:02 [error] 5598#5598: *8 connect() failed (111: Connection refused) while connecting to upstream, client: 127.0.0.1, server: localhost, request: "GET / HTTP/1.1", upstream: "http://127.0.0.1:5000/", host: "localhost:8000"
+
+^Z
+[1]+  Stopped                 sudo tail -f /var/log/nginx/error.log
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ curl http://localhost:8000
+<div>My site on 8000</div>
+
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo vim /etc/nginx/sites-available/my_site
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo cat /etc/nginx/sites-available/my_site
+server {
+    listen 8000;
+    server_name localhost;
+
+    location / {
+        proxy_pass http://localhost:5000;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+    }
+}
+
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo nginx -t
+nginx: the configuration file /etc/nginx/nginx.conf syntax is ok
+nginx: configuration file /etc/nginx/nginx.conf test is successful
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ sudo systemctl reload nginx
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$ curl http://localhost:8000
+<html>
+<head><title>502 Bad Gateway</title></head>
+<body>
+<center><h1>502 Bad Gateway</h1></center>
+<hr><center>nginx/1.24.0 (Ubuntu)</center>
+</body>
+</html>
+esen@DESKTOP-DD03TV4:/home/infosec/lab10$
